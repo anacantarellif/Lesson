@@ -44,9 +44,12 @@
   .label.show{opacity:1;transform:translate(-50%,0)}
 
   /* preview card */
-  .card{position:absolute;z-index:7;width:288px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 32px rgba(16,24,40,.16);padding:10px;opacity:0;pointer-events:none;transform:translateY(6px) scale(.98);transform-origin:50% 100%;
+  .card{position:absolute;z-index:7;width:288px;background:#fff;border-radius:2px;box-shadow:0 3px 6px -4px rgba(0,0,0,.12),0 6px 16px 0 rgba(0,0,0,.08),0 9px 28px 8px rgba(0,0,0,.05);padding:10px;opacity:0;pointer-events:none;transform:translateY(6px) scale(.98);transform-origin:50% 100%;
         transition:opacity .16s ease,transform .16s ease,left .2s cubic-bezier(.2,.8,.2,1)}
   .card.show{opacity:1;transform:none;pointer-events:auto}
+  /* setinha do Popover (Ant Design 4) apontando pro ícone */
+  .card .arrow{position:absolute;bottom:-4px;left:var(--ax,50%);width:8.48px;height:8.48px;margin-left:-4.24px;background:#fff;transform:rotate(45deg);box-shadow:3px 3px 7px rgba(0,0,0,.07);transition:left .2s cubic-bezier(.2,.8,.2,1)}
+  .card.instant .arrow{transition:none}
   .card.instant{transition:opacity .16s ease,transform .16s ease}
   .card h4{margin:10px 2px 2px;font-size:13px}
   .card p{margin:0 2px;color:var(--muted);font-size:12px;line-height:1.45}
@@ -177,6 +180,7 @@
       <h4 id="ct"></h4>
       <p id="cd"></p>
       <div class="hint">Click to add to the slide</div>
+      <div class="arrow"></div>
     </div>
   </div>
 
@@ -366,7 +370,7 @@ function showCard(b){
   stage.innerHTML = it.bare ? it.html() : `<div class="ws w-${it.k}">${it.html()}</div>`;
   stage.querySelector('.ws')?.classList.add('w-'+it.k);
   $('ct').textContent=it.name; $('cd').textContent=it.desc;
-  card.style.left=Math.max(8,Math.min(ew-w-8,p.x-w/2))+'px';
+  const cl=Math.max(8,Math.min(ew-w-8,p.x-w/2)); card.style.left=cl+'px'; card.style.setProperty('--ax',(p.x-cl)+'px');
   card.style.top=(p.top-card.offsetHeight-10)+'px';
   hideLabel(); card.classList.add('show'); warm=true;
   if(PLAYERS[it.k]) cleanup=PLAYERS[it.k](stage)||null;
